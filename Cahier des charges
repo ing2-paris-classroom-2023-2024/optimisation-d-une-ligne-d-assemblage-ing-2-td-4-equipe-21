@@ -1,1 +1,24 @@
-Debut CDC
+Contexte
+Dans toutes les usines de fabrication à la chaîne est utilisée une ligne d'assemblage qui
+permet d'assembler toutes les parties d'un produit. Pour illustrer le propos dans le cadre
+de ce projet, nous travaillerons sur la ligne d'assemblage de la future voiture électrique
+ECElecar. Mais le logiciel que l'on développera sera capable en réalité d'optimiser 
+n'importe quelle ligne d'assemblage. 
+
+Pour développer l'ECElecar, la ligne doit effectuer certaines actions, comme monter les 
+roues sur les essieux, monter les essieux sur le châssis, placer la carrosserie sur le 
+châssis, placer le moteur, le volant, les sièges dans la carrosserie, peindre la carrosserie…
+
+Une ligne d'assemblage est une ligne sur laquelle les voitures en construction se déplacent 
+et autour de laquelle sont placés un certain nombre de robots et/ou d'ouvriers qui effectuent 
+des opérations répétitives (fig. 1).
+
+2. Cahier des charges	
+2.1. Première approche simpliste	
+2.2. Dans un second temps : multi-contraintes	
+2.3. Extension : heuristique	
+2.4. Fichiers de contraintes	
+2.4.1. exclusions.txt	
+2.4.2. precedences.txt	
+2.4.3. operations.txt	
+2.4.4. temps_cycle.txt	
