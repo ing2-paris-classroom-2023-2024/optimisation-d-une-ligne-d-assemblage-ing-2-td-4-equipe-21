@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <stdio.h>
+
 #include <stdlib.h>
 
 #define OPERATION_MAX 50
@@ -27,6 +27,7 @@ typedef struct operation{
     int groupeOperation;//Groupe dans lequel appartient l'operation
     int nombrelignes;//constant donne le nb d'operations dans la liste donnee
     double sommeDureeOperationsPrecedentes;//donne le temps en amont de cette operation (depend du rang)
+    int station;//station d'exclusion
 }t_operation;
 
 
