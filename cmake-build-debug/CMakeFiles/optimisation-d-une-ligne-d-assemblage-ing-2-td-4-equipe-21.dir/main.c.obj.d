@@ -1,6 +1,6 @@
 CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/main.c.obj: \
- C:\Users\abouv\CLionProject\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21\cmake-build-debug\main.c \
- C:\Users\abouv\CLionProject\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21\cmake-build-debug\main.h \
+ C:\Users\abouv\CLionProject\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21\main.c \
+ C:\Users\abouv\CLionProject\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21\main.h \
  C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/stdio.h \
  C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/crtdefs.h \
  C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw.h \

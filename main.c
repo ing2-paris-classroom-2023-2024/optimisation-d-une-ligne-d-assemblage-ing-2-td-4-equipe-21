@@ -1,5 +1,216 @@
 #include "main.h"
 
+///Partie contrainte exclusion Jean
+
+void lire_fichier (char *nomFichier, char *nomFichier2, int paires [OPERATION_MAX * 2][2], int operations [OPERATION_MAX], int* nb_paires, int* nb_operations){
+
+    /// Ouverture du fichier exclusions
+    FILE * fichier = fopen(nomFichier,"r");
+
+    // Blindage de la bonne lecture du fichier
+    if (!fichier) {
+        printf("Erreur de lecture fichier\n");
+        exit(-1);
+    }
+
+    else {
+
+        // Affectation des paires dans un tableau
+        for (int i = 0; !feof (fichier); i++) {
+
+            int op1, op2;
+
+            // Lecture du fichier
+            fscanf(fichier,"%d %d", &op1, &op2);
+
+
+            // Ordonnancement de la paire : [p1 p2] avec p1 < p2
+            if (op1 > op2){
+                paires [i][0] = op2;
+                paires [i][1] = op1;
+            }
+
+            else {
+                paires [i][0] = op1;
+                paires [i][1] = op2;
+            }
+
+
+            // Compteur du nombre de paires
+            *nb_paires += 1;
+        }
+
+    }
+
+    // Fermeture du fichier
+    fclose(fichier);
+
+
+    /// Ouverture du fichier operations
+    FILE * fichier2 = fopen(nomFichier2,"r");
+
+    // Blindage de la bonne lecture du fichier
+    if (!fichier2) {
+        printf("Erreur de lecture fichier\n");
+        exit(-1);
+    }
+
+    else {
+
+        // Affectation des operations dans un tableau
+        for (int i = 0; !feof (fichier2); i++) {
+
+            int opA;
+            float opB;
+
+            // Lecture du fichier
+            fscanf(fichier2,"%d %f", &opA, &opB);
+
+
+            // Affectation au tableau d'operations
+            operations [i] = opA;
+
+            *nb_operations += 1;
+
+        }
+
+    }
+
+    // Fermeture du fichier
+    fclose(fichier2);
+
+}
+
+
+void trier_operations (int paires [OPERATION_MAX * 2][2], int stations [STATION_MAX][OPERATION_MAX], const int operations [OPERATION_MAX], const int* nb_paires, const int* nb_operations) {
+
+    // Initialisation du tableau des stations
+    for (int i = 0; i < STATION_MAX; i++) {
+        for (int j = 0; j < *nb_operations; j++) {
+            stations[i][j] = 0;
+        }
+    }
+
+
+
+    // Boucle principale : on parcourt les elements du tableau d'operations
+    for (int i = 0; i < *nb_operations; i++) {
+
+        // On affecte chaque valeur a la station 1, puis on les modifie si besoin
+        stations [0][i] = operations [i];
+
+        // i represente la position de valeur
+        int valeur = operations[i];
+
+        int valeur_interdite = 0;
+
+
+        // On parcourt les differentes stations
+        for (int e = 0; e < STATION_MAX; e++){
+
+            // On parcourt les elements du tableau de paires
+            for (int j = 0; j < *nb_paires; j++) {
+                for (int k = 0; k < 2; k++) {
+
+
+                    // On affecte les valeurs interdites
+                    if (valeur == paires[j][k]) {
+
+
+                        if (k == 0) {
+                            valeur_interdite = paires[j][1];
+                        }
+
+                        if (k == 1) {
+                            valeur_interdite = paires[j][0];
+                        }
+
+
+                        // On deplace les valeurs interdites si elles se trouvent dans une meme station
+                        for (int l = 0; l < *nb_operations; l++) {
+
+                            if (valeur_interdite == stations[e][l]) {
+
+                                stations[e][i] = 0;
+                                stations[e + 1][i] = valeur;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    // On supprime les doublons
+    for (int i = 0; i < *nb_operations; i++){
+        for (int j = 0; j < STATION_MAX; j++){
+
+            if ((stations [j][i] != 0) && stations [j + 1][i] == 0){
+
+                stations [j + 2][i] = 0;
+
+            }
+        }
+    }
+}
+
+
+void afficher_stations (int stations [STATION_MAX][OPERATION_MAX], const int* nb_operations){
+
+    printf("\n\n");
+
+    // Affichage des stations et operations
+    for (int i = 0; i < STATION_MAX; i++) {
+
+        printf("\nStation %2d :", i + 1);
+
+        for (int j = 0; j < *nb_operations - 1; j++) {
+
+            if (stations [i][j] != 0){
+
+                printf(" %2d", stations [i][j]);
+
+            }
+        }
+    }
+}
+
+
+
+void exclusion() {
+
+    int paires [OPERATION_MAX * 2][2]; // Tableau de paires interdites
+    int operations [OPERATION_MAX]; // Tableau des operations
+    char nom_fichier [50];
+    char nom_fichier2 [50];
+    int nb_paires = 0; // Nombre de paires
+    int nb_operations = 0; // Nombre d'operations
+    int stations [STATION_MAX][OPERATION_MAX]; // Tableau des stations contenant les operations
+
+
+    // Recuperation des fichiers textes
+    printf("\nEntrer le nom du fichier des exclusions : ");
+    gets(nom_fichier);
+
+    printf("\nEntrer le nom du fichier des operations : ");
+    gets(nom_fichier2);
+
+
+    lire_fichier(nom_fichier, nom_fichier2, paires, operations, &nb_paires, &nb_operations); ///Question : nom_fichier =! nom_fichier2?
+
+    trier_operations (paires, stations, operations, &nb_paires, &nb_operations);
+
+    afficher_stations (stations, &nb_operations);
+
+
+    printf("\n\n");
+    system("pause");
+}
+
+///FIN partie contrainte exclusion Jean
+
 /// partie temps de cycle Antoine
 char *nomfichier(char nomdufichiertxt[100]){
     printf("saisir nom du fichier voulu : nom.txt\n");
@@ -109,7 +320,7 @@ void afficheroperationunique(t_operation *operation,int i){
 void afficherlisteoperationsExtra(t_operation *operation){
 
     for(int i=0;i<operation[1].nombrelignes;i++){
-        printf("rang:%d num: %d %f groupe %d \n",operation[i].rangOperation,operation[i].numeroOperation,operation[i].dureeOperation,operation[i].groupeOperation);
+        printf("rang:%d num: %d %f groupe %d tps %lf \n",operation[i].rangOperation,operation[i].numeroOperation,operation[i].dureeOperation,operation[i].groupeOperation,operation[i].sommeDureeOperationsPrecedentes);
     }
 }
 
@@ -138,18 +349,30 @@ void updateSommeDureeOperationsPrecedentesSelonOrdre(t_operation *operation){
 void regrouperParTempsCycleBrut(t_operation *operation, float tempsDeCycle){
 
     double somme=0;
+    double sommeIndependante=0;
     int groupement=1;
     for(int i=0;i<operation[i].nombrelignes;i++){
         operation[i].groupeOperation=groupement;
+        sommeIndependante+=operation[i].dureeOperation;
+        operation[i].sommeDureeOperationsPrecedentes=sommeIndependante;
         if(somme>tempsDeCycle){
             i-=1;
             groupement+=1;//on recule de une etape des qu'on a franchi le seuil du temps cycle.
+            operation[i].groupeOperation=groupement;
             printf("%lf\n",somme-operation[i].dureeOperation);
             somme=0;
         }
         somme+=operation[i].dureeOperation;
     }
     printf("%lf\n",somme);
+}
+
+void calculerTempsdeCycleParGroupe(t_operation* operation, int numeroGroupe,double tempsDeCycleDuGroupe){
+    for(int i=0;i<operation[1].nombrelignes+1;i++){
+        if(operation[i].groupeOperation==numeroGroupe){
+            tempsDeCycleDuGroupe+=operation[i].dureeOperation;
+        }
+    }
 }
 
 void formerGroupesParGroupeTempsDeCycle(t_operation *operation){
@@ -179,6 +402,37 @@ void remplirTableauDeGroupesParTempsDeCycle(t_operation** TabOperation,t_operati
 
 }
 
+void tableauDetempsDeCycleParGroupes(t_operation* operation,double* tableauTemps){
+
+    for(int i =0;i<operation[operation[1].nombrelignes].groupeOperation;i++){
+        calculerTempsdeCycleParGroupe(operation,i+1,tableauTemps[i]);
+    }
+}
+
+void afficherUniqueGroupesDeTempsDeCycle(t_operation* operation, int groupe, int nombrelignes){
+    for(int j=0;j<nombrelignes+1;j++){
+        if(operation[j].groupeOperation==groupe){
+            printf("%d\t",operation[j].numeroOperation);
+        }
+    }
+    printf("\n");
+}
+
+void afficherTousGroupesDeTempsDeCycle(t_operation* operation, int nbgroupes, int nlignes){
+    for(int i=1;i<nbgroupes+1;i++){
+        afficherUniqueGroupesDeTempsDeCycle(operation,i,nlignes);
+        printf("\n");
+    }
+}
+
+void optimiserGroupes(t_operation* operation){
+
+
+
+}
+
+
+
 void tempsCycle() {
     FILE *fichier=NULL;
     FILE *fichiertemps=NULL;
@@ -191,7 +445,7 @@ void tempsCycle() {
     //car on a besion d'un tableau de taille N+1 valeurs.
     lectureValeursFichier(fichier, nblignes, listeoperations, nomdufichiertempsoperations);
     tiret();
-    afficherlisteoperations(listeoperations);
+    //afficherlisteoperations(listeoperations);
     //tiret();// pour faire un test//
     //printf("%d\t%f\nt cycle = %f s\n",listeoperations[4].numeroOperation,listeoperations[4].dureeOperation,tempsDeCycle);
     tiret();
@@ -204,25 +458,38 @@ void tempsCycle() {
     regrouperParTempsCycleBrut(listeoperations, tempsDeCycle);
     afficherlisteoperationsExtra(listeoperations);
     tiret();
-    formerGroupesParGroupeTempsDeCycle(listeoperations);
-    int nbGroupes=listeoperations[listeoperations[1].nombrelignes].groupeOperation;
+    tiret();
+    tiret();
+    //formerGroupesParGroupeTempsDeCycle(listeoperations);
+    int nbgroupes = listeoperations[listeoperations[1].nombrelignes].groupeOperation;
+    //int nbGroupes=listeoperations[listeoperations[1].nombrelignes].groupeOperation;
     //printf("%d\n",nbGroupes);
-    t_operation **tableauListesOperations=(t_operation**)calloc(nbGroupes*(nblignes+1),sizeof(t_operation));
+    //t_operation **tableauListesOperations=(t_operation**)calloc(nbGroupes*(nblignes+1),sizeof(t_operation));
     //tableau de listes d'operations ou la premiere case est la liste complete des operations (rangee dans un ordre quelconque).
     //remplirTableauDeGroupesParTempsDeCycle(tableauListesOperations,listeoperations,nbGroupes);
     //afficherlisteoperationsExtra(tableauListesOperations[1]);
+    //double *tableauTemps=(double*)calloc(listeoperations[listeoperations[1].nombrelignes].groupeOperation+1, sizeof(double ));
+    //tableauDetempsDeCycleParGroupes(listeoperations,tableauTemps);
+    //calculerTempsdeCycleParGroupe(listeoperations,1,tableauTemps[2]);
+    //printf("%lf\n",tableauTemps[2]);
+    afficherUniqueGroupesDeTempsDeCycle(listeoperations, 1, nblignes);
+    tiret();
+    afficherUniqueGroupesDeTempsDeCycle(listeoperations, 2, nblignes);
+
+
+    //printf("%lf\n",calculerTempsdeCycleParGroupe(listeoperations,listeoperations[1].groupeOperation));
     free(listeoperations);//vider espace memoire alloue
-    free(tableauListesOperations);
+    //free(tableauListesOperations);
 }
 /// FIN partie temps de cycle Antoine
 
 ///construire l'interface dans le main
 
 int main(){
-    tempsCycle();
+    //tempsCycle();
+    exclusion();
     return 1;
 }
-///
 
 
 
