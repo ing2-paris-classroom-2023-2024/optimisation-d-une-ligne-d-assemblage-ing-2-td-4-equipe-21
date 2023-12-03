@@ -12,16 +12,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
+
 #include <stdlib.h>
-#define MAX_OPERATIONS 100
 
 #define OPERATION_MAX 50
 #define STATION_MAX 10
-
+#define MAX_OPERATIONS 100
 typedef struct {
     char op[10];
 } Operation;
-
 typedef struct operation{
     int numeroOperation;//nomenclature operation
     float dureeOperation;//duree operation
