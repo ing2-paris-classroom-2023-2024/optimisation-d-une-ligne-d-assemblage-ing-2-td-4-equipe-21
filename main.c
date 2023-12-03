@@ -596,6 +596,9 @@ int main(){
             exclusion();
             break;
         case 2:
+            tiret();
+            precedence();
+            fflush(stdin);
             break;
         case 3:
             tiret();

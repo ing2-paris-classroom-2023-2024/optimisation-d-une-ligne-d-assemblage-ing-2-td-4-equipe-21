@@ -3,7 +3,7 @@
 //
 
 
-#include "pre.h"
+#include "main.h"
 Operation operations[MAX_OPERATIONS];
 bool visited[MAX_OPERATIONS];
 int n;
@@ -20,9 +20,7 @@ void dfs(int node) {
     }
 }
 
-
-#include "pre.h"
-int main() {
+int precedence() {
     Operation operations[MAX_OPERATIONS];
     bool visited[MAX_OPERATIONS];
     int n;
