@@ -1,5 +1,253 @@
 #include "main.h"
 
+///Partie contrainte exclusion Jean
+
+void lire_fichier (char *nomFichier, char *nomFichier2, int paires [OPERATION_MAX * 2][2], int operations [OPERATION_MAX], int* nb_paires, int* nb_operations){
+
+    /// Ouverture du fichier exclusions
+    FILE * fichier = fopen(nomFichier,"r");
+
+    // Blindage de la bonne lecture du fichier
+    if (!fichier) {
+        printf("Erreur de lecture fichier\n");
+        exit(-1);
+    }
+
+    else {
+
+        // Affectation des paires dans un tableau
+        for (int i = 0; !feof (fichier); i++) {
+
+            int op1, op2;
+
+            // Lecture du fichier
+            fscanf(fichier,"%d %d", &op1, &op2);
+
+
+            // Ordonnancement de la paire : [p1 p2] avec p1 < p2
+            if (op1 > op2){
+                paires [i][0] = op2;
+                paires [i][1] = op1;
+            }
+
+            else {
+                paires [i][0] = op1;
+                paires [i][1] = op2;
+            }
+
+
+            // Compteur du nombre de paires
+            *nb_paires += 1;
+        }
+
+    }
+
+    // Fermeture du fichier
+    fclose(fichier);
+
+
+    /// Ouverture du fichier operations
+    FILE * fichier2 = fopen(nomFichier2,"r");
+
+    // Blindage de la bonne lecture du fichier
+    if (!fichier2) {
+        printf("Erreur de lecture fichier\n");
+        exit(-1);
+    }
+
+    else {
+
+        // Affectation des operations dans un tableau
+        for (int i = 0; !feof (fichier2); i++) {
+
+            int opA;
+            float opB;
+
+            // Lecture du fichier
+            fscanf(fichier2,"%d %f", &opA, &opB);
+
+
+            // Affectation au tableau d'operations
+            operations [i] = opA;
+
+            *nb_operations += 1;
+
+        }
+
+    }
+
+    // Fermeture du fichier
+    fclose(fichier2);
+
+}
+
+
+void trier_operations (int paires [OPERATION_MAX * 2][2], int stations [STATION_MAX][OPERATION_MAX], const int operations [OPERATION_MAX], const int* nb_paires, const int* nb_operations) {
+
+    // Initialisation du tableau des stations
+    for (int i = 0; i < STATION_MAX; i++) {
+        for (int j = 0; j < *nb_operations; j++) {
+            stations[i][j] = 0;
+        }
+    }
+
+
+
+    // Boucle principale : on parcourt les elements du tableau d'operations
+    for (int i = 0; i < *nb_operations; i++) {
+
+        // On affecte chaque valeur a la station 1, puis on les modifie si besoin
+        stations [0][i] = operations [i];
+
+        // i represente la position de valeur
+        int valeur = operations[i];
+
+        int valeur_interdite = 0;
+
+
+        // On parcourt les differentes stations
+        for (int e = 0; e < STATION_MAX; e++){
+
+            // On parcourt les elements du tableau de paires
+            for (int j = 0; j < *nb_paires; j++) {
+                for (int k = 0; k < 2; k++) {
+
+
+                    // On affecte les valeurs interdites
+                    if (valeur == paires[j][k]) {
+
+
+                        if (k == 0) {
+                            valeur_interdite = paires[j][1];
+                        }
+
+                        if (k == 1) {
+                            valeur_interdite = paires[j][0];
+                        }
+
+
+                        // On deplace les valeurs interdites si elles se trouvent dans une meme station
+                        for (int l = 0; l < *nb_operations; l++) {
+
+                            if (valeur_interdite == stations[e][l]) {
+
+                                stations[e][i] = 0;
+                                stations[e + 1][i] = valeur;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    // On supprime les doublons
+    for (int i = 0; i < *nb_operations; i++){
+        for (int j = 0; j < STATION_MAX; j++){
+
+            if ((stations [j][i] != 0) && stations [j + 1][i] == 0){
+
+                stations [j + 2][i] = 0;
+
+            }
+        }
+    }
+}
+
+
+void afficher_stations (int stations [STATION_MAX][OPERATION_MAX], const int* nb_operations){
+
+    printf("\n\n");
+
+    // Affichage des stations et operations
+    for (int i = 0; i < STATION_MAX; i++) {
+
+        printf("\nStation %2d :", i + 1);
+
+        for (int j = 0; j < *nb_operations - 1; j++) {
+
+            if (stations [i][j] != 0){
+
+                printf(" %2d (%d %d)", stations [i][j],i,j);
+
+            }
+        }
+    }
+}
+
+
+
+void exclusion() {
+
+    int paires [OPERATION_MAX * 2][2]; // Tableau de paires interdites
+    int operations [OPERATION_MAX]; // Tableau des operations
+    char nom_fichier [50];
+    char nom_fichier2 [50];
+    int nb_paires = 0; // Nombre de paires
+    int nb_operations = 0; // Nombre d'operations
+    int stations [STATION_MAX][OPERATION_MAX]; // Tableau des stations contenant les operations
+
+
+    // Recuperation des fichiers textes
+    printf("\nEntrer le nom du fichier des exclusions : ");
+    gets(nom_fichier);
+    fflush(stdin);
+
+    printf("\nEntrer le nom du fichier des operations : ");
+    gets(nom_fichier2);
+    fflush(stdin);
+
+
+    lire_fichier(nom_fichier, nom_fichier2, paires, operations, &nb_paires, &nb_operations); ///Question : nom_fichier =! nom_fichier2?
+
+    trier_operations (paires, stations, operations, &nb_paires, &nb_operations);
+
+    afficher_stations (stations, &nb_operations);
+    fflush(stdin);
+
+
+    printf("\n\n");
+    system("pause");
+}
+
+void exclusionSansAffichage(){
+    int paires1 [OPERATION_MAX * 2][2]; // Tableau de paires1 interdites
+    int operations1 [OPERATION_MAX]; // Tableau des operations1
+    char nom_fichier1 [50];
+    char nom_fichier21 [50];
+    int nb_paires1 = 0; // Nombre de paires1
+    int nb_operations1 = 0; // Nombre d'operations1
+    int stations1 [STATION_MAX][OPERATION_MAX]; // Tableau des stations1 contenant les operations1
+
+
+    // Recuperation des fichiers textes
+    printf("\nEntrer le nom du fichier des exclusions : ");
+    gets(nom_fichier1);
+    fflush(stdin);
+
+    printf("\nEntrer le nom du fichier des operations1 : ");
+    gets(nom_fichier21);
+    fflush(stdin);
+
+
+    lire_fichier(nom_fichier1, nom_fichier21, paires1, operations1, &nb_paires1, &nb_operations1); ///Question : nom_fichier1 =! nom_fichier21?
+
+    trier_operations (paires1, stations1, operations1, &nb_paires1, &nb_operations1);
+
+    afficher_stations (stations1, &nb_operations1);
+    fflush(stdin);
+
+
+    printf("\n\n");
+    system("pause");
+
+}
+
+///FIN partie contrainte exclusion Jean
+
+
 /// partie temps de cycle Antoine
 char *nomfichier(char nomdufichiertxt[100]){
     printf("saisir nom du fichier voulu : nom.txt\n");
@@ -219,7 +467,32 @@ void optimiserGroupes(t_operation* operation){
 
 
 }
+void afficherEtAssocier_stations (int stations [STATION_MAX][OPERATION_MAX], const int* nb_operations, t_operation* operation, int nblignes){
 
+    printf("\n\n");
+
+    // Affichage des stations et operations
+    for (int i = 0; i < STATION_MAX; i++) {
+
+        printf("\nStation %2d :", i + 1);
+
+        for (int j = 0; j < *nb_operations - 1; j++) {
+
+            if (stations [i][j] != 0){
+
+                printf(" %2d (%d %d)", stations [i][j],i,j);
+                for(int p=0; p<nblignes;p++){
+                    if(operation[p].numeroOperation==stations[i][j]){
+                        operation[p].station=i+1;
+                    }
+                }
+
+
+
+            }
+        }
+    }
+}
 
 
 void tempsCycle() {
@@ -264,18 +537,84 @@ void tempsCycle() {
     afficherUniqueGroupesDeTempsDeCycle(listeoperations, 1, nblignes);
     tiret();
     afficherUniqueGroupesDeTempsDeCycle(listeoperations, 2, nblignes);
+    tiret();
 
 
     //printf("%lf\n",calculerTempsdeCycleParGroupe(listeoperations,listeoperations[1].groupeOperation));
     free(listeoperations);//vider espace memoire alloue
     //free(tableauListesOperations);
 }
+
+
+
+
 /// FIN partie temps de cycle Antoine
+
+
+
+void contrainteExclusionEttempsCycle() {
+    exclusionSansAffichage();
+    FILE *fichier=NULL;
+    FILE *fichiertemps=NULL;
+    char nomdufichiertempsoperations[100];
+    char nomdufichierTempsCycle[90];
+    float tempsDeCycle=lectureValeurTemps(fichiertemps,nomdufichierTempsCycle);
+    tiret();
+    int nblignes = lectureNombreLignesFichier(fichier, nomdufichiertempsoperations);
+    t_operation *listeoperations=(t_operation*)calloc((nblignes+1),sizeof(t_operation));
+    //car on a besion d'un tableau de taille N+1 valeurs.
+    lectureValeursFichier(fichier, nblignes, listeoperations, nomdufichiertempsoperations);
+    tiret();
+    bubbleSort(listeoperations,nblignes);
+    updateRangOperations(listeoperations);
+    regrouperParTempsCycleBrut(listeoperations, tempsDeCycle);
+    afficherlisteoperationsExtra(listeoperations);
+    tiret();
+    tiret();
+    tiret();
+    afficherUniqueGroupesDeTempsDeCycle(listeoperations, 1, nblignes);
+    tiret();
+    afficherUniqueGroupesDeTempsDeCycle(listeoperations, 2, nblignes);
+    tiret();
+    free(listeoperations);//vider espace memoire alloue
+}
 
 ///construire l'interface dans le main
 
 int main(){
-    tempsCycle();
+    int selection=0;
+    while(selection==0){
+        printf("bienvenue dans notre programme d'optimisation, veuillez choisir un programme:\n");
+        printf("1 contrainte exclusion \n 2 contrainte precedence \n 3 temps de cycle \n 4 contrainte exclusion et temps cycle \n 5 contrainte exclusion et de precedence \n 6 contrainte precedence et temps de cycle \n");
+        fflush(stdin);
+        scanf("%d",&selection);
+    }
+    switch (selection) {
+        case 1:
+            tiret();
+            fflush(stdin);
+            exclusion();
+            break;
+        case 2:
+            break;
+        case 3:
+            tiret();
+            fflush(stdin);
+            tempsCycle();
+            break;
+        case 4:
+            tiret();
+            fflush(stdin);
+            contrainteExclusionEttempsCycle();
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        default:
+            exit(-1);
+            break;
+    }
     return 1;
 }
 
