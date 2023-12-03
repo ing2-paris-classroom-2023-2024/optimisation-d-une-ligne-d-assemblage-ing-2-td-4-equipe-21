@@ -5,28 +5,48 @@
 #define MAX_OPERATIONS 100
 
 typedef struct {
-    char op[10];
-} Operation;
+    int op1;
+    int op2;
+} OperationPair;
 
-Operation operations[MAX_OPERATIONS];
-bool visited[MAX_OPERATIONS];
+OperationPair operations[MAX_OPERATIONS];
+int inDegree[MAX_OPERATIONS] = {0};
+bool visited[MAX_OPERATIONS] = {false};
 int n;
 
-void dfs(int node) {
-    visited[node] = true;
-    
+void topologicalSort() {
+    int queue[MAX_OPERATIONS];
+    int front = 0, rear = 0;
+
+    // Initialisation de la file avec les opérations initiales
     for (int i = 0; i < n; i++) {
-        if (strcmp(operations[node].op, operations[i].op) == 0 && !visited[i]) {
-            dfs(i);
+        if (inDegree[i] == 0) {
+            queue[rear++] = i;
+            visited[i] = true;
         }
     }
-    
-    printf("%s\n", operations[node].op);
+
+    while (front < rear) {
+        int node = queue[front++];
+
+        // Afficher l'opération ici ou stocker l'ordre dans une autre structure de données
+        printf("%d %d\n", operations[node].op1, operations[node].op2);
+
+        for (int i = 0; i < n; i++) {
+            if (operations[i].op1 == operations[node].op2 && !visited[i]) {
+                inDegree[i]--;
+                if (inDegree[i] == 0) {
+                    queue[rear++] = i;
+                    visited[i] = true;
+                }
+            }
+        }
+    }
 }
 
 int main() {
     FILE *file;
-    char filename[] = "operations.txt"; // Nom du fichier texte
+    char filename[] = "file.txt"; // Nom du fichier texte
     int count = 0;
 
     // Ouverture du fichier en mode lecture
@@ -37,7 +57,8 @@ int main() {
     }
 
     // Lecture des opérations du fichier
-    while (fscanf(file, "%s", operations[count].op) == 1 && count < MAX_OPERATIONS) {
+    while (fscanf(file, "%d %d", &operations[count].op1, &operations[count].op2) == 2 && count < MAX_OPERATIONS) {
+        inDegree[count] = 0;
         count++;
     }
 
@@ -46,19 +67,17 @@ int main() {
 
     n = count;
 
-    // Initialisation du tableau de visite
+    // Compter les degrés entrants pour chaque opération
     for (int i = 0; i < n; i++) {
-        visited[i] = false;
+        for (int j = 0; j < n; j++) {
+            if (operations[j].op1 == operations[i].op2) {
+                inDegree[j]++;
+            }
+        }
     }
 
     printf("Ordre des opérations respectant la contrainte de précédence :\n");
-
-    // Appliquer DFS pour obtenir l'ordre
-    for (int i = 0; i < n; i++) {
-        if (!visited[i]) {
-            dfs(i);
-        }
-    }
+    topologicalSort();
 
     return EXIT_SUCCESS;
 }
