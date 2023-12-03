@@ -80,13 +80,13 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/main.c">
+			<Option target="optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21"/>
+		</Unit>
+		<Unit filename="C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/main.h">
+			<Option target="optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21"/>
+		</Unit>
 		<Unit filename="C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/precedence.c">
-			<Option target="optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21"/>
-		</Unit>
-		<Unit filename="C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/tempsCycle.c">
-			<Option target="optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21"/>
-		</Unit>
-		<Unit filename="C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/tempsCycle.h">
 			<Option target="optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21"/>
 		</Unit>
 		<Unit filename="C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/CMakeLists.txt">

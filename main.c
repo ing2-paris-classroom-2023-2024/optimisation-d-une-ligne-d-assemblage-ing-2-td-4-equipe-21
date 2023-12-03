@@ -1,6 +1,6 @@
-#include "tempsCycle.h"
+#include "main.h"
 
-
+/// partie temps de cycle Antoine
 char *nomfichier(char nomdufichiertxt[100]){
     printf("saisir nom du fichier voulu : nom.txt\n");
     gets(nomdufichiertxt);
@@ -179,7 +179,7 @@ void remplirTableauDeGroupesParTempsDeCycle(t_operation** TabOperation,t_operati
 
 }
 
-int main() {
+void tempsCycle() {
     FILE *fichier=NULL;
     FILE *fichiertemps=NULL;
     char nomdufichiertempsoperations[100];
@@ -213,9 +213,19 @@ int main() {
     //afficherlisteoperationsExtra(tableauListesOperations[1]);
     free(listeoperations);//vider espace memoire alloue
     free(tableauListesOperations);
-
-    return 0;
 }
+/// FIN partie temps de cycle Antoine
+
+///construire l'interface dans le main
+
+int main(){
+    tempsCycle();
+    return 1;
+}
+///
+
+
+
 
 ///a voir ce qui est utile ou non afin de pouvoir faire fonctionner les programmes ensemble.
 ///coder une interface (switchcase)

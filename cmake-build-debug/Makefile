@@ -128,6 +128,30 @@ optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/build
 .PHONY : optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/fast
 
+main.obj: main.c.obj
+.PHONY : main.obj
+
+# target to build an object file
+main.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/main.c.obj
+.PHONY : main.c.obj
+
+main.i: main.c.i
+.PHONY : main.i
+
+# target to preprocess a source file
+main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/main.c.i
+.PHONY : main.c.i
+
+main.s: main.c.s
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/main.c.s
+.PHONY : main.c.s
+
 precedence.obj: precedence.c.obj
 .PHONY : precedence.obj
 
@@ -152,30 +176,6 @@ precedence.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/precedence.c.s
 .PHONY : precedence.c.s
 
-tempsCycle.obj: tempsCycle.c.obj
-.PHONY : tempsCycle.obj
-
-# target to build an object file
-tempsCycle.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/tempsCycle.c.obj
-.PHONY : tempsCycle.c.obj
-
-tempsCycle.i: tempsCycle.c.i
-.PHONY : tempsCycle.i
-
-# target to preprocess a source file
-tempsCycle.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/tempsCycle.c.i
-.PHONY : tempsCycle.c.i
-
-tempsCycle.s: tempsCycle.c.s
-.PHONY : tempsCycle.s
-
-# target to generate assembly for a file
-tempsCycle.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir\build.make CMakeFiles/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21.dir/tempsCycle.c.s
-.PHONY : tempsCycle.c.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -185,12 +185,12 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21
+	@echo ... main.obj
+	@echo ... main.i
+	@echo ... main.s
 	@echo ... precedence.obj
 	@echo ... precedence.i
 	@echo ... precedence.s
-	@echo ... tempsCycle.obj
-	@echo ... tempsCycle.i
-	@echo ... tempsCycle.s
 .PHONY : help
 
 
