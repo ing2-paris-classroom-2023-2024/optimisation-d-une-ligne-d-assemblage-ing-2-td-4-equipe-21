@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21
+# Install script for directory: C:/Users/perro/Desktop/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Project")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/abouv/CLionProject/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/perro/Desktop/optimisation-d-une-ligne-d-assemblage-ing-2-td-4-equipe-21/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
