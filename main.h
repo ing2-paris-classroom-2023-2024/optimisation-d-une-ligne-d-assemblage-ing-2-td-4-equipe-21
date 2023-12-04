@@ -12,7 +12,20 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "main.h"
 
+#define TEMPS_CYCLE_MAX 100000
+#define TAILLE_INITIALE_OPERATIONS 10000
+
+#define MAX_OPERATIONS 100
+typedef struct {
+    char op[10];
+} Operation;
+
+#include "main.h"
+Operation operations[MAX_OPERATIONS];
+bool visited[MAX_OPERATIONS];
+int n;
 
 #include <stdlib.h>
 
