@@ -396,12 +396,12 @@ void regrouperParTempsCycleBrut(t_operation *operation, float tempsDeCycle){
             i-=1;
             groupement+=1;//on recule de une etape des qu'on a franchi le seuil du temps cycle.
             operation[i].groupeOperation=groupement;
-            printf("%lf\n",somme-operation[i].dureeOperation);
+            printf("le temps de cycle pour la station est : %lf\n",somme-operation[i].dureeOperation);
             somme=0;
         }
         somme+=operation[i].dureeOperation;
     }
-    printf("%lf\n",somme);
+    printf("le temps de cycle pour la station est : %lf\n",somme);
 }
 
 void calculerTempsdeCycleParGroupe(t_operation* operation, int numeroGroupe,double tempsDeCycleDuGroupe){
@@ -447,9 +447,11 @@ void tableauDetempsDeCycleParGroupes(t_operation* operation,double* tableauTemps
 }
 
 void afficherUniqueGroupesDeTempsDeCycle(t_operation* operation, int groupe, int nombrelignes){
+    printf("groupe n= %d : \n ",groupe);
     for(int j=0;j<nombrelignes+1;j++){
         if(operation[j].groupeOperation==groupe){
-            printf("%d\t",operation[j].numeroOperation);
+            printf("%d",operation[j].numeroOperation);
+            printf(" ");
         }
     }
     printf("\n");
@@ -510,7 +512,6 @@ void tempsCycle() {
     //afficherlisteoperations(listeoperations);
     //tiret();// pour faire un test//
     //printf("%d\t%f\nt cycle = %f s\n",listeoperations[4].numeroOperation,listeoperations[4].dureeOperation,tempsDeCycle);
-    tiret();
     bubbleSort(listeoperations,nblignes);
     //afficherlisteoperations(listeoperations);
     //tiret();
@@ -518,9 +519,8 @@ void tempsCycle() {
     //afficherlisteoperations(listeoperations);
     //tiret();
     regrouperParTempsCycleBrut(listeoperations, tempsDeCycle);
+    tiret();
     afficherlisteoperationsExtra(listeoperations);
-    tiret();
-    tiret();
     tiret();
     //formerGroupesParGroupeTempsDeCycle(listeoperations);
     int nbgroupes = listeoperations[listeoperations[1].nombrelignes].groupeOperation;
