@@ -193,9 +193,11 @@ void exclusion() {
     // Recuperation des fichiers textes
     printf("\nEntrer le nom du fichier des exclusions : ");
     gets(nom_fichier);
+    fflush(stdin);
 
     printf("\nEntrer le nom du fichier des operations : ");
     gets(nom_fichier2);
+    fflush(stdin);
 
 
     lire_fichier(nom_fichier, nom_fichier2, paires, operations, &nb_paires, &nb_operations); ///Question : nom_fichier =! nom_fichier2?
@@ -203,13 +205,48 @@ void exclusion() {
     trier_operations (paires, stations, operations, &nb_paires, &nb_operations);
 
     afficher_stations (stations, &nb_operations);
+    fflush(stdin);
 
 
     printf("\n\n");
     system("pause");
 }
 
+void exclusionSansAffichage(){
+    int paires1 [OPERATION_MAX * 2][2]; // Tableau de paires1 interdites
+    int operations1 [OPERATION_MAX]; // Tableau des operations1
+    char nom_fichier1 [50];
+    char nom_fichier21 [50];
+    int nb_paires1 = 0; // Nombre de paires1
+    int nb_operations1 = 0; // Nombre d'operations1
+    int stations1 [STATION_MAX][OPERATION_MAX]; // Tableau des stations1 contenant les operations1
+
+
+    // Recuperation des fichiers textes
+    printf("\nEntrer le nom du fichier des exclusions : ");
+    gets(nom_fichier1);
+    fflush(stdin);
+
+    printf("\nEntrer le nom du fichier des operations1 : ");
+    gets(nom_fichier21);
+    fflush(stdin);
+
+
+    lire_fichier(nom_fichier1, nom_fichier21, paires1, operations1, &nb_paires1, &nb_operations1); ///Question : nom_fichier1 =! nom_fichier21?
+
+    trier_operations (paires1, stations1, operations1, &nb_paires1, &nb_operations1);
+
+    afficher_stations (stations1, &nb_operations1);
+    fflush(stdin);
+
+
+    printf("\n\n");
+    system("pause");
+
+}
+
 ///FIN partie contrainte exclusion Jean
+
 
 /// partie temps de cycle Antoine
 char *nomfichier(char nomdufichiertxt[100]){
@@ -430,7 +467,32 @@ void optimiserGroupes(t_operation* operation){
 
 
 }
+void afficherEtAssocier_stations (int stations [STATION_MAX][OPERATION_MAX], const int* nb_operations, t_operation* operation, int nblignes){
 
+    printf("\n\n");
+
+    // Affichage des stations et operations
+    for (int i = 0; i < STATION_MAX; i++) {
+
+        printf("\nStation %2d :", i + 1);
+
+        for (int j = 0; j < *nb_operations - 1; j++) {
+
+            if (stations [i][j] != 0){
+
+                printf(" %2d (%d %d)", stations [i][j],i,j);
+                for(int p=0; p<nblignes;p++){
+                    if(operation[p].numeroOperation==stations[i][j]){
+                        operation[p].station=i+1;
+                    }
+                }
+
+
+
+            }
+        }
+    }
+}
 
 
 void tempsCycle() {
@@ -475,19 +537,84 @@ void tempsCycle() {
     afficherUniqueGroupesDeTempsDeCycle(listeoperations, 1, nblignes);
     tiret();
     afficherUniqueGroupesDeTempsDeCycle(listeoperations, 2, nblignes);
+    tiret();
 
 
     //printf("%lf\n",calculerTempsdeCycleParGroupe(listeoperations,listeoperations[1].groupeOperation));
     free(listeoperations);//vider espace memoire alloue
     //free(tableauListesOperations);
 }
+
+
+
+
 /// FIN partie temps de cycle Antoine
+
+
+
+void contrainteExclusionEttempsCycle() {
+    exclusionSansAffichage();
+    FILE *fichier=NULL;
+    FILE *fichiertemps=NULL;
+    char nomdufichiertempsoperations[100];
+    char nomdufichierTempsCycle[90];
+    float tempsDeCycle=lectureValeurTemps(fichiertemps,nomdufichierTempsCycle);
+    tiret();
+    int nblignes = lectureNombreLignesFichier(fichier, nomdufichiertempsoperations);
+    t_operation *listeoperations=(t_operation*)calloc((nblignes+1),sizeof(t_operation));
+    //car on a besion d'un tableau de taille N+1 valeurs.
+    lectureValeursFichier(fichier, nblignes, listeoperations, nomdufichiertempsoperations);
+    tiret();
+    bubbleSort(listeoperations,nblignes);
+    updateRangOperations(listeoperations);
+    regrouperParTempsCycleBrut(listeoperations, tempsDeCycle);
+    afficherlisteoperationsExtra(listeoperations);
+    tiret();
+    tiret();
+    tiret();
+    afficherUniqueGroupesDeTempsDeCycle(listeoperations, 1, nblignes);
+    tiret();
+    afficherUniqueGroupesDeTempsDeCycle(listeoperations, 2, nblignes);
+    tiret();
+    free(listeoperations);//vider espace memoire alloue
+}
 
 ///construire l'interface dans le main
 
 int main(){
-    //tempsCycle();
-    exclusion();
+    int selection=0;
+    while(selection==0){
+        printf("bienvenue dans notre programme d'optimisation, veuillez choisir un programme:\n");
+        printf("1 contrainte exclusion \n 2 contrainte precedence \n 3 temps de cycle \n 4 contrainte exclusion et temps cycle \n 5 contrainte exclusion et de precedence \n 6 contrainte precedence et temps de cycle \n");
+        fflush(stdin);
+        scanf("%d",&selection);
+    }
+    switch (selection) {
+        case 1:
+            tiret();
+            fflush(stdin);
+            exclusion();
+            break;
+        case 2:
+            break;
+        case 3:
+            tiret();
+            fflush(stdin);
+            tempsCycle();
+            break;
+        case 4:
+            tiret();
+            fflush(stdin);
+            contrainteExclusionEttempsCycle();
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        default:
+            exit(-1);
+            break;
+    }
     return 1;
 }
 
